@@ -55,89 +55,29 @@ class _ListProductState extends State<ListProduct> {
                           double? moneyVoucher = 0;
                           double? rateVoucher = 0;
                           if (state.cart != null) {
-                            retailAmount =
-                                state.cart!.products
-                                    .firstWhere(
-                                      (e) =>
-                                          e.product.id ==
-                                          state.products[index].id,
-                                      orElse:
-                                          () => ProductInCartEntity(
-                                            product: ProductEntity(
-                                              id: 0,
-                                              name: '',
-                                              categoryId: 0,
-                                              wholesalePrice: 0,
-                                              retailPrice: 0,
-                                              unit: '',
-                                              volume: '',
-                                            ),
-                                          ),
-                                    )
-                                    .amountRetail;
-                            wholeSaleAmount =
-                                state.cart!.products
-                                    .firstWhere(
-                                      (e) =>
-                                          e.product.id ==
-                                          state.products[index].id,
-                                      orElse:
-                                          () => ProductInCartEntity(
-                                            product: ProductEntity(
-                                              id: 0,
-                                              name: '',
-                                              categoryId: 0,
-                                              wholesalePrice: 0,
-                                              retailPrice: 0,
-                                              unit: '',
-                                              volume: '',
-                                            ),
-                                          ),
-                                    )
-                                    .amountWholeSale;
 
-                            moneyVoucher =
-                                state.cart!.products
-                                    .firstWhere(
-                                      (e) =>
-                                          e.product.id ==
-                                          state.products[index].id,
-                                      orElse:
-                                          () => ProductInCartEntity(
-                                            product: ProductEntity(
-                                              id: 0,
-                                              name: '',
-                                              categoryId: 0,
-                                              wholesalePrice: 0,
-                                              retailPrice: 0,
-                                              unit: '',
-                                              volume: '',
-                                            ),
-                                          ),
-                                    )
-                                    .moneyDiscount;
+                            ProductInCartEntity? inCart=state.cart!.products
+                                .firstWhere(
+                                    (e) =>
+                                e.product.id ==
+                                    state.products[index].id,
+                                orElse:
+                                    () => ProductInCartEntity(
+                                  product: ProductEntity(
+                                    id: 0,
+                                    name: '',
+                                    categoryId: 0,
+                                    wholesalePrice: 0,
+                                    retailPrice: 0,
+                                    unit: '',
+                                    volume: '',
+                                  ),
+                                ));
+                            retailAmount=inCart.amountRetail;
+                            wholeSaleAmount =inCart.amountWholeSale;
 
-                            rateVoucher =
-                                state.cart!.products
-                                    .firstWhere(
-                                      (e) =>
-                                          e.product.id ==
-                                          state.products[index].id,
-                                      orElse:
-                                          () => ProductInCartEntity(
-                                            product: ProductEntity(
-                                              id: 0,
-                                              name: '',
-                                              categoryId: 0,
-                                              wholesalePrice: 0,
-                                              retailPrice: 0,
-                                              unit: '',
-                                              volume: '',
-                                            ),
-                                          ),
-                                    )
-                                    .rateDiscount! *
-                                100;
+                            moneyVoucher =inCart.moneyDiscount;
+                            rateVoucher =inCart.rateDiscount!*100;
                           }
                           return ProductCard(
                             product: state.products[index],

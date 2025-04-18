@@ -1,6 +1,7 @@
 import 'package:demo_1/assets/text_data.dart';
 import 'package:demo_1/common/constants/app_colors.dart';
 import 'package:demo_1/domain/products/entity/product_entity.dart';
+import 'package:demo_1/domain/products/entity/product_in_cart_entity.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/event.dart';
 import 'package:demo_1/presentation/products/bloc/product/state.dart';
@@ -12,11 +13,12 @@ import '../../../common/constants/enum.dart';
 class AddVoucherSheet extends StatefulWidget {
   final ProductEntity product;
   final BuildContext context;
-
+  final double rateVoucher;
+  final double moneyVoucher;
   const AddVoucherSheet({
     super.key,
     required this.product,
-    required this.context,
+    required this.context,  required this.rateVoucher, required this.moneyVoucher,
   });
 
   @override
@@ -24,9 +26,17 @@ class AddVoucherSheet extends StatefulWidget {
 }
 
 class _AddVoucherSheetState extends State<AddVoucherSheet> {
+
   TextEditingController _moneyDiscountController = TextEditingController();
   TextEditingController _rateDiscountController = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _moneyDiscountController.text=widget.moneyVoucher!=0?widget.moneyVoucher.toString():"";
+    _rateDiscountController.text=widget.rateVoucher!=0?widget.rateVoucher.toString():"";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +106,11 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
         ],
       ),
     );
-  }
 
+
+
+
+  }
   Widget _header(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,9 +142,9 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
   Widget _textField(String hint, String icon, TypeVoucher type) {
     return TextField(
       controller:
-          type == TypeVoucher.rateDiscount
-              ? _rateDiscountController
-              : _moneyDiscountController,
+      type == TypeVoucher.rateDiscount
+          ? _rateDiscountController
+          : _moneyDiscountController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -198,7 +211,7 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             ApplyVoucherProductEvent(
               productId: widget.product.id,
               moneyDiscount:
-                  double.tryParse(_moneyDiscountController.text) ?? 0,
+              double.tryParse(_moneyDiscountController.text) ?? 0,
               rateDiscount: double.tryParse(_rateDiscountController.text) ?? 0,
             ),
           );
@@ -236,4 +249,5 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
       ),
     );
   }
+
 }
