@@ -97,7 +97,7 @@ class CheckoutPage extends StatelessWidget {
                   int? wholeSaleAmount = 0;
                   if (state.cart != null) {
                     retailAmount = state.cart!.products[index].amountRetail;
-                    retailAmount = state.cart!.products[index].amountRetail;
+                    wholeSaleAmount = state.cart!.products[index].amountWholeSale;
                   }
                   return ProductCard(
                     isCheckOutPage: false,
