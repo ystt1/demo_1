@@ -8,10 +8,13 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: Size(double.infinity, 46),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12)
-        )
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
+    ),
+
+    appBarTheme: AppBarTheme(
+      color: AppColors.backgroundColor,
+      surfaceTintColor: Colors.transparent,
     ),
   );
 }

@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../constants/app_colors.dart';
+
 class ProductLabels extends StatelessWidget {
   final TypeSortProduct? type;
   final SortDirection? direction;
@@ -24,69 +26,92 @@ class ProductLabels extends StatelessWidget {
         ? CupertinoIcons.down_arrow
         : CupertinoIcons.up_arrow;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GestureDetector(
-          onTap: () {
-            context.read<ProductBloc>().add(
-              OnSortProductEvent(
-                type: TypeSortProduct.name,
-                isForCart: isInCart,
-              ),
-            );
-          },
-          child: Row(
-            children: [
-              Text(TextData.product),
-              Visibility(
-                visible:type!=null && type == TypeSortProduct.name,
-                child: Icon(
-                  iconDirection
+        Expanded(
+          flex: 2,
+          child: GestureDetector(
+            onTap: () {
+              context.read<ProductBloc>().add(
+                OnSortProductEvent(
+                  type: TypeSortProduct.name,
+                  isForCart: isInCart,
                 ),
-              ),
-            ],
+              );
+            },
+            child: Row(
+              children: [
+                Text(TextData.product,style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.labelColor,
+                  fontWeight: FontWeight.w500,
+                ),),
+                Visibility(
+                  visible:type!=null && type == TypeSortProduct.name,
+                  child: Icon(
+                    iconDirection,color: AppColors.labelColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            context.read<ProductBloc>().add(
-              OnSortProductEvent(
-                type: TypeSortProduct.wholeSalePrice,
-                isForCart: isInCart,
-              ),
-            );
-          },
-          child: Row(
-            children: [
-              Text(TextData.wholesalePrice),
-              Visibility(
-                visible:type!=null && type == TypeSortProduct.wholeSalePrice,
-                child: Icon(
-                    iconDirection
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              context.read<ProductBloc>().add(
+                OnSortProductEvent(
+                  type: TypeSortProduct.wholeSalePrice,
+                  isForCart: isInCart,
                 ),
-              ),
-            ],
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(TextData.wholesalePrice,style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.labelColor,
+                  fontWeight: FontWeight.w500,
+                )),
+                Visibility(
+                  visible:type!=null && type == TypeSortProduct.wholeSalePrice,
+                  child: Icon(
+                      iconDirection,color: AppColors.labelColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            context.read<ProductBloc>().add(
-              OnSortProductEvent(
-                type: TypeSortProduct.retailPrice,
-                isForCart: isInCart,
-              ),
-            );
-          },
-          child: Row(
-            children: [
-              Text(TextData.retailPrice),
-              Visibility(
-                visible:type!=null && type == TypeSortProduct.retailPrice,
-                child: Icon(
-                    iconDirection
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              context.read<ProductBloc>().add(
+                OnSortProductEvent(
+                  type: TypeSortProduct.retailPrice,
+                  isForCart: isInCart,
                 ),
-              ),
-            ],
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(TextData.retailPrice,style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.labelColor,
+                  fontWeight: FontWeight.w500,
+                )),
+                Visibility(
+                  visible:type!=null && type == TypeSortProduct.retailPrice,
+                  child: Icon(
+                      iconDirection,color: AppColors.labelColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

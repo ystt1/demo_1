@@ -37,7 +37,8 @@ dependencies:
   flutter_bloc: ^9.1.0
   dartz: ^0.10.1
   get_it: ^8.0.3
-
+  intl: ^0.18.1
+  rxdart: ^0.27.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:demo_1/common/constants/constant.dart';
 import 'package:demo_1/data/products/models/search_product_payload.dart';
@@ -6,26 +5,32 @@ import 'package:demo_1/domain/products/entity/cart_entity.dart';
 import 'package:demo_1/domain/products/entity/product_entity.dart';
 import 'package:demo_1/domain/products/usecase/get_product_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../common/constants/enum.dart';
 import '../../../../service_locator.dart';
 import 'event.dart';
 import 'state.dart';
 
+EventTransformer<E> debounce<E>(Duration duration) {
+  return (events, mapper) => events.debounceTime(duration).switchMap(mapper);
+}
+
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductLoadingState()) {
-    on<SearchProductEvent>((event, emit) => searchProduct(event, emit));
-    on<ChangeCategoryEvent>((event, emit) => changeCategory(event, emit));
-    on<LoadMoreProductEvent>((event, emit) => loadMoreProduct(event, emit));
-    on<ChangeAmountProductEvent>(
-      (event, emit) => changeWholeSaleAmountProduct(event, emit),
+    on<SearchProductEvent>(
+      (event, emit) => _searchProduct(event, emit),
+      transformer: debounce(const Duration(milliseconds: 300)),
     );
-    on<OnCloseSheetEvent>((event, emit) => onCloseSheet(emit));
-    on<ApplyVoucherProductEvent>((event, emit) => applyVoucher(event, emit));
-    on<OnSortProductEvent>((event, emit) => onSortProduct(event, emit));
+    on<ChangeCategoryEvent>((_changeCategory));
+    on<LoadMoreProductEvent>(_loadMoreProduct);
+    on<ChangeAmountProductEvent>(_changeAmountProduct);
+    on<OnCloseSheetEvent>(_onCloseSheet);
+    on<ApplyVoucherProductEvent>(_applyVoucher);
+    on<OnSortProductEvent>(_onSortProduct,);
   }
 
-  Future<void> searchProduct(
+  Future<void> _searchProduct(
     ProductEvent event,
     Emitter<ProductState> emit,
   ) async {
@@ -54,7 +59,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  Future<void> changeCategory(
+  Future<void> _changeCategory(
     ProductEvent event,
     Emitter<ProductState> emit,
   ) async {
@@ -93,7 +98,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  Future<void> loadMoreProduct(
+  Future<void> _loadMoreProduct(
     ProductEvent event,
     Emitter<ProductState> emit,
   ) async {
@@ -136,10 +141,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  void changeWholeSaleAmountProduct(
-    ProductEvent event,
-    Emitter<ProductState> emit,
-  ) {
+  void _changeAmountProduct(ProductEvent event, Emitter<ProductState> emit) {
     ChangeAmountProductEvent currentEvent = (event as ChangeAmountProductEvent);
     if (state is ProductSuccessState) {
       ProductSuccessState currentState = (state as ProductSuccessState);
@@ -173,7 +175,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     return cart;
   }
 
-  void applyVoucher(
+  void _applyVoucher(
     ApplyVoucherProductEvent event,
     Emitter<ProductState> emit,
   ) {
@@ -220,10 +222,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-
-
-
-  void onCloseSheet(Emitter<ProductState> emit) {
+  void _onCloseSheet(ProductEvent event, Emitter<ProductState> emit) {
     if (state is ProductSuccessState) {
       ProductSuccessState currentState = (state as ProductSuccessState)
           .copyWith(applyVoucherError: ReturnedApplyVoucher.close);
@@ -231,51 +230,44 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-
-
-
-  Future<void> onSortProduct(
+  Future<void> _onSortProduct(
     OnSortProductEvent event,
     Emitter<ProductState> emit,
   ) async {
     if (state is ProductSuccessState) {
       ProductSuccessState currentState = (state as ProductSuccessState);
-      if(!event.isForCart) {
+      if (!event.isForCart) {
         SearchProductPayload search = currentState.search.copyWith(
           type: event.type,
           index: 0,
           direction:
-          event.type == currentState.search.sort
-              ? SortDirection.asc
-              : SortDirection.desc,
+              event.type == currentState.search.sort
+                  ? SortDirection.asc
+                  : SortDirection.desc,
         );
         Either returnedData = await sl<GetProductUseCase>().execute(
           params: search,
         );
         returnedData.fold(
-              (error) => emit(ProductFailureState(error: error)),
-              (data) =>
-              emit(
-                ProductSuccessState(
-                  products: data,
-                  search: search,
-                  isEnd:
+          (error) => emit(ProductFailureState(error: error)),
+          (data) => emit(
+            ProductSuccessState(
+              products: data,
+              search: search,
+              isEnd:
                   (data as List<ProductEntity>).length <
-                      AppConstant.amountLoadMore,
-                  isLoadingMore: false,
-                  cart: currentState.cart,
-                ),
-              ),
+                  AppConstant.amountLoadMore,
+              isLoadingMore: false,
+              cart: currentState.cart,
+            ),
+          ),
         );
-      }
-      else{
-        CartEntity? cart=currentState.cart;
+      } else {
+        CartEntity? cart = currentState.cart;
         cart?.onSortProduct(event.type);
-        ProductSuccessState newState=currentState.copyWith(cart: cart);
+        ProductSuccessState newState = currentState.copyWith(cart: cart);
         emit(newState);
       }
     }
   }
-
-
 }

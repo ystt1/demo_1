@@ -1,5 +1,5 @@
 class TextData {
-  static final String searchProduct = 'Tìm kiếm sản phầm';
+  static final String searchProduct = 'Tìm kiếm sản phẩm';
   static final String product = "Sản phẩm";
   static final String wholesalePrice = "Giá thùng";
   static final String retailPrice = "Giá lẻ";

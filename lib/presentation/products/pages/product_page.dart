@@ -29,11 +29,20 @@ class ProductPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 47.0),
           child: AppBar(
             backgroundColor: AppColors.backgroundColor,
-            leading: Icon(CupertinoIcons.back),
+
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Icon(CupertinoIcons.back,size: 24,),
+            ),
+            leadingWidth: 40,
+            titleSpacing: 6,
             title: SearchProductsField(),
             actions: [
+              SizedBox(width: 2,),
               Image.asset(IconString.iconQrCode, width: 24, height: 24),
+              SizedBox(width: 8),
               Image.asset(IconString.iconFilter, width: 24, height: 24),
+              SizedBox(width: 8),
               _cartIcon(context),
             ],
           ),
@@ -61,7 +70,7 @@ class ProductPage extends StatelessWidget {
 
           return Container(
             height: 60,
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            padding: EdgeInsets.only(top: 12, bottom: 12, left: 16),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
@@ -93,7 +102,19 @@ class ProductPage extends StatelessWidget {
                                 : AppColors.secondBackgroundColor,
                       ),
                     ),
-                    child: Center(child: Text(categories[index].name)),
+                    child: Center(
+                      child: Text(
+                        categories[index].name,
+                        style: TextStyle(
+                          color:
+                              isChosen
+                                  ? AppColors.dataTextColor
+                                  : AppColors.labelColor,
+                          fontWeight:
+                              isChosen ? FontWeight.w600 : FontWeight.w400,
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },
@@ -126,14 +147,25 @@ class ProductPage extends StatelessWidget {
     return Container(
       color: AppColors.secondBackgroundColor,
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      child: ProductLabels(type: type,direction: direction, isInCart: false,),
+      width: MediaQuery.of(context).size.width,
+      child: ProductLabels(type: type, direction: direction, isInCart: false),
     );
   }
 
   Widget _buttonLayout() {
     return Container(
       padding: EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 34),
-      decoration: BoxDecoration(border: Border(top: BorderSide(width: 1))),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundColor,
+        boxShadow: [BoxShadow(
+          blurRadius: 3,
+          offset: Offset(0, -1),
+          color: Color(0xff000000).withAlpha(10)
+        )],
+        border: Border(
+          top: BorderSide(width: 1, color: AppColors.secondBackgroundColor),
+        ),
+      ),
       child: Center(child: CartButton()),
     );
   }

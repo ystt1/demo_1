@@ -44,6 +44,7 @@ class CartEntity {
       if (type == TypeAmountProduct.retail) {
         updated.update(amountRetail: (updated.amountRetail ?? 0) + amount);
       } else {
+
         updated.update(
           amountWhoseSale: (updated.amountWholeSale ?? 0) + amount,
         );

@@ -1,6 +1,10 @@
 import 'package:demo_1/assets/text_data.dart';
 import 'package:demo_1/common/constants/app_colors.dart';
+import 'package:demo_1/common/helper/app_helper.dart';
+import 'package:demo_1/common/widgets/app_divider_horizontal.dart';
+import 'package:demo_1/common/widgets/app_divider_vertical.dart';
 import 'package:demo_1/domain/products/entity/product_entity.dart';
+import 'package:demo_1/domain/products/entity/product_in_cart_entity.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/event.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +34,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          isCheckOutPage == null
-              ? EdgeInsets.symmetric(vertical: 8)
-              : EdgeInsets.zero,
+
       color: Color(0xffFFFFFF),
       child: Column(
         children: [
@@ -43,7 +44,7 @@ class ProductCard extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 8),
-                Divider(),
+                AppDividerHorizontal(),
                 SizedBox(height: 8),
                 _addVoucher(context),
               ],
@@ -56,10 +57,10 @@ class ProductCard extends StatelessWidget {
 
   Widget _property(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
       children: [
-        SizedBox(
-          width: 80,
+        Expanded(
+          flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -77,7 +78,7 @@ class ProductCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.secondBackgroundColor,
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(width: 1,color: Color(0xffA1A1AA)),
+                  border: Border.all(width: 1, color: Color(0xffA1A1AA)),
                 ),
                 child: Text(
                   "${product.unit} | ${product.volume}",
@@ -92,13 +93,13 @@ class ProductCard extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8),
-        SizedBox(height: 44, child: VerticalDivider()),
+        SizedBox(height: 44, child: AppDividerVertical()),
         SizedBox(width: 8),
-        _price(TypeAmountProduct.wholeSale, context),
+        Expanded(flex: 3, child: _price(TypeAmountProduct.wholeSale, context)),
         SizedBox(width: 8),
-        SizedBox(height: 44, child: VerticalDivider()),
+        SizedBox(height: 44, child: AppDividerVertical()),
         SizedBox(width: 4),
-        _price(TypeAmountProduct.retail, context),
+        Expanded(flex: 3,child: _price(TypeAmountProduct.retail, context)),
       ],
     );
   }
@@ -110,10 +111,10 @@ class ProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          (type == TypeAmountProduct.retail
+          AppHelper.vietNamMoneyFormat(type == TypeAmountProduct.retail
                   ? product.retailPrice
                   : product.wholesalePrice)
-              .toStringAsFixed(2),
+              ,
           style: TextStyle(
             fontSize: 12,
             color: AppColors.dataTextColor,
@@ -171,39 +172,50 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _addVoucher(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          moneyVoucher != 0
-              ? "${TextData.discount2} $moneyVoucher đ".toString()
-              : (rateVoucher != 0
-                  ? "${TextData.discount2} $rateVoucher%".toString()
-                  : TextData.addVoucher),
-        ),
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder:
-                  (_) => Container(
-                    height: 318,
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundColor,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(12),
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            color: AppColors.backgroundColor.withAlpha(80),
+            child: Text(
+              moneyVoucher != 0
+                  ? "${TextData.discount2} $moneyVoucher đ".toString()
+                  : (rateVoucher != 0
+                      ? "${TextData.discount2} $rateVoucher%".toString()
+                      : TextData.addVoucher),
+              style: TextStyle(color: AppColors.dataTextColor),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder:
+                    (_) => Container(
+                      height: 318,
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundColor,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
+                      ),
+                      child: AddVoucherSheet(
+                        product: product,
+                        context: context,
+                        moneyVoucher: moneyVoucher!,
+                        rateVoucher: rateVoucher!,
                       ),
                     ),
-                    child: AddVoucherSheet(product: product, context: context),
-                  ),
-            ).then((_) {
-              context.read<ProductBloc>().add(OnCloseSheetEvent());
-              return null;
-            });
-          },
-          child: Icon(Icons.navigate_next),
-        ),
-      ],
+              ).then((_) {
+                context.read<ProductBloc>().add(OnCloseSheetEvent());
+                return null;
+              });
+            },
+            child: Icon(Icons.navigate_next,size: 24,),
+          ),
+        ],
+      ),
     );
   }
 

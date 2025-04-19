@@ -1,5 +1,6 @@
 import 'package:demo_1/assets/text_data.dart';
 import 'package:demo_1/common/constants/app_colors.dart';
+import 'package:demo_1/common/helper/app_helper.dart';
 import 'package:demo_1/common/widgets/product_card.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/state.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../assets/icon_string.dart';
 import '../../../common/constants/enum.dart';
+import '../../../common/widgets/app_divider_horizontal.dart';
 import '../../../common/widgets/product_labels.dart';
 import '../../../domain/products/entity/product_in_cart_entity.dart';
 import '../bloc/expansion/bloc.dart';
@@ -43,7 +45,7 @@ class CheckoutPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Column(
             children: [
-              Divider(),
+              AppDividerHorizontal(),
               SizedBox(height: 8),
               _listLabel(context),
               _productList(),
@@ -60,13 +62,13 @@ class CheckoutPage extends StatelessWidget {
   }
 
   Widget _listLabel(BuildContext context) {
-    TypeSortProduct? type=null;
-    SortDirection? direction=null;
+    TypeSortProduct? type = null;
+    SortDirection? direction = null;
     if (context.watch<ProductBloc>().state is ProductSuccessState) {
       type =
           (context.watch<ProductBloc>().state as ProductSuccessState)
-              .cart!.type;
-
+              .cart!
+              .type;
 
       print(type.runtimeType);
       direction =
@@ -77,7 +79,7 @@ class CheckoutPage extends StatelessWidget {
     return Container(
       color: AppColors.backgroundColor,
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: ProductLabels(isInCart: true,type: type,direction: direction,),
+      child: ProductLabels(isInCart: true, type: type, direction: direction),
     );
   }
 
@@ -97,7 +99,8 @@ class CheckoutPage extends StatelessWidget {
                   int? wholeSaleAmount = 0;
                   if (state.cart != null) {
                     retailAmount = state.cart!.products[index].amountRetail;
-                    wholeSaleAmount = state.cart!.products[index].amountWholeSale;
+                    wholeSaleAmount =
+                        state.cart!.products[index].amountWholeSale;
                   }
                   return ProductCard(
                     isCheckOutPage: false,
@@ -132,13 +135,15 @@ class CheckoutPage extends StatelessWidget {
           double length = productDiscount.length as double;
           double height =
               isExpanded && length > 0
-                  ? 251+20+24+(22*length +4*(length-1))+12
-                  : 254 +12;
+                  ? 251 + 20 + 24 + (22 * length + 4 * (length - 1)) + 12
+                  : 254 + 12;
           return AnimatedContainer(
             duration: Duration(milliseconds: 400),
             height: height,
             child: Container(
-              constraints: BoxConstraints(maxHeight: 251+20+24+(22*10 +4*(10-1))+12),
+              constraints: BoxConstraints(
+                maxHeight: 251 + 20 + 24 + (22 * 10 + 4 * (10 - 1)) + 12,
+              ),
               decoration: BoxDecoration(
                 color: AppColors.backgroundColor,
                 boxShadow: [
@@ -153,7 +158,7 @@ class CheckoutPage extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: Expansion(products: productDiscount)),
-                  Divider(),
+                  AppDividerHorizontal(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -170,7 +175,9 @@ class CheckoutPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              state.cart!.subPrice.toStringAsFixed(2),
+                              AppHelper.vietNamMoneyFormat(
+                                state.cart!.subPrice,
+                              ),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -179,17 +186,21 @@ class CheckoutPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 4),
-                        Divider(),
+                        AppDividerHorizontal(),
                         SizedBox(height: 4),
                         _labelInfo(
                           Text(TextData.subTotal, style: TextStyle()),
-                          Text(state.cart!.totalPrice.toStringAsFixed(2)),
+                          Text(
+                            AppHelper.vietNamMoneyFormat(
+                              state.cart!.totalPrice,
+                            ),
+                          ),
                         ),
                         SizedBox(height: 4),
                         _labelInfo(
                           Text(TextData.discount, style: TextStyle()),
                           Text(
-                            "- ${(state.cart!.totalPrice - state.cart!.subPrice).toStringAsFixed(2)}",
+                            "- ${AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)}",
                             style: TextStyle(color: Colors.red),
                           ),
                         ),
@@ -200,7 +211,7 @@ class CheckoutPage extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         _orderButton(),
-                        SizedBox(height: 12,),
+                        SizedBox(height: 12),
                       ],
                     ),
                   ),

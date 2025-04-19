@@ -1,4 +1,5 @@
 import 'package:demo_1/assets/text_data.dart';
+import 'package:demo_1/common/helper/app_helper.dart';
 import 'package:demo_1/domain/products/entity/cart_entity.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/state.dart';
@@ -72,7 +73,8 @@ class CartButton extends StatelessWidget {
                   Visibility(
                     visible: cartEntity.totalPrice != cartEntity.subPrice,
                     child: Text(
-                      cartEntity.totalPrice.toStringAsFixed(0),
+                      AppHelper.vietNamMoneyFormat(
+                      cartEntity.totalPrice),
                       style: TextStyle(
                         color: Colors.white,
                         decoration: TextDecoration.lineThrough,
@@ -82,7 +84,7 @@ class CartButton extends StatelessWidget {
                   ),
 
                   Text(
-                    cartEntity.subPrice.toStringAsFixed(0),
+                    AppHelper.vietNamMoneyFormat(cartEntity.subPrice),
                     style: TextStyle(color: AppColors.backgroundColor),
                   ),
                 ],

@@ -1,3 +1,4 @@
+import 'package:demo_1/common/constants/app_colors.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/event.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +27,22 @@ class _SearchProductsFieldState extends State<SearchProductsField> {
           );
         },
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          contentPadding: EdgeInsets.only(top: 6,bottom: 6,right: 8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: AppColors.borderBackgroundColor),
+          ),
           hintText: TextData.searchProduct,
-          prefixIcon: Icon(Icons.search),
+          hintStyle: TextStyle(color: AppColors.secondaryColor,fontSize: 14),
+          isDense: true,
+            prefixIcon: Container(
+              padding: const EdgeInsets.only(left: 12,),
+              child: Icon(Icons.search,size: 24,),
+            ),
+          prefixIconConstraints: BoxConstraints(
+            maxWidth: 48,
+            maxHeight: 24
+          )
         ),
       ),
     );

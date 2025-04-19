@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/constants/enum.dart';
+import '../../../common/widgets/app_divider_horizontal.dart';
 
 class AddVoucherSheet extends StatefulWidget {
   final ProductEntity product;
@@ -59,7 +60,7 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             child: _header(context),
           ),
-          Divider(),
+          AppDividerHorizontal(),
           SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -93,7 +94,7 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _returnedError(),
           ),
-          Divider(),
+          AppDividerHorizontal(),
 
           Container(
             height: 46,

@@ -1,4 +1,5 @@
 import 'package:demo_1/assets/text_data.dart';
+import 'package:demo_1/common/constants/app_colors.dart';
 import 'package:demo_1/domain/products/entity/product_entity.dart';
 import 'package:demo_1/domain/products/entity/product_in_cart_entity.dart';
 import 'package:demo_1/presentation/products/bloc/product/event.dart';
@@ -38,73 +39,73 @@ class _ListProductState extends State<ListProduct> {
             return Center(child: Text(state.error));
           }
           if (state is ProductSuccessState) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.separated(
-                      controller: _scrollController,
-                      itemBuilder: (_, index) {
-                        if (state.products.isEmpty) {
-                          return Center(child: Text(TextData.notFoundProduct));
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    controller: _scrollController,
+                    itemBuilder: (_, index) {
+                      if (state.products.isEmpty) {
+                        return Center(child: Text(TextData.notFoundProduct));
+                      }
+                      if (index + 1 <= state.products.length) {
+                        int? retailAmount = 0;
+                        int? wholeSaleAmount = 0;
+                        double? moneyVoucher = 0;
+                        double? rateVoucher = 0;
+                        if (state.cart != null) {
+
+                          ProductInCartEntity? inCart=state.cart!.products
+                              .firstWhere(
+                                  (e) =>
+                              e.product.id ==
+                                  state.products[index].id,
+                              orElse:
+                                  () => ProductInCartEntity(
+                                product: ProductEntity(
+                                  id: 0,
+                                  name: '',
+                                  categoryId: 0,
+                                  wholesalePrice: 0,
+                                  retailPrice: 0,
+                                  unit: '',
+                                  volume: '',
+                                ),
+                              ));
+                          retailAmount=inCart.amountRetail;
+                          wholeSaleAmount =inCart.amountWholeSale;
+
+                          moneyVoucher =inCart.moneyDiscount;
+                          rateVoucher =inCart.rateDiscount!*100;
                         }
-                        if (index + 1 <= state.products.length) {
-                          int? retailAmount = 0;
-                          int? wholeSaleAmount = 0;
-                          double? moneyVoucher = 0;
-                          double? rateVoucher = 0;
-                          if (state.cart != null) {
-
-                            ProductInCartEntity? inCart=state.cart!.products
-                                .firstWhere(
-                                    (e) =>
-                                e.product.id ==
-                                    state.products[index].id,
-                                orElse:
-                                    () => ProductInCartEntity(
-                                  product: ProductEntity(
-                                    id: 0,
-                                    name: '',
-                                    categoryId: 0,
-                                    wholesalePrice: 0,
-                                    retailPrice: 0,
-                                    unit: '',
-                                    volume: '',
-                                  ),
-                                ));
-                            retailAmount=inCart.amountRetail;
-                            wholeSaleAmount =inCart.amountWholeSale;
-
-                            moneyVoucher =inCart.moneyDiscount;
-                            rateVoucher =inCart.rateDiscount!*100;
-                          }
-                          return ProductCard(
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
+                          child: ProductCard(
                             product: state.products[index],
                             wholeSaleAmount: wholeSaleAmount,
                             retailAmount: retailAmount,
                             moneyVoucher: moneyVoucher,
                             rateVoucher: rateVoucher,
-                          );
-                        }
-                        return (state.isLoadingMore != null &&
-                                state.isLoadingMore == true)
-                            ? Center(child: CircularProgressIndicator())
-                            : ((state.isEnd != null && state.isEnd == true)
-                                ? Center(child: Text(TextData.endOfList))
-                                : SizedBox());
-                      },
-                      separatorBuilder: (_, index) => SizedBox(height: 8),
-                      itemCount:
-                          ((state.isLoadingMore != null &&
-                                      state.isLoadingMore == true) ||
-                                  (state.isEnd != null && state.isEnd == true))
-                              ? state.products.length + 1
-                              : state.products.length + 1,
-                    ),
+                          ),
+                        );
+                      }
+                      return (state.isLoadingMore != null &&
+                              state.isLoadingMore == true)
+                          ? Center(child: CircularProgressIndicator())
+                          : ((state.isEnd != null && state.isEnd == true)
+                              ? Center(child: Text(TextData.endOfList))
+                              : SizedBox());
+                    },
+                    separatorBuilder: (_, index) => Container(height: 8,color: AppColors.secondBackgroundColor,),
+                    itemCount:
+                        ((state.isLoadingMore != null &&
+                                    state.isLoadingMore == true) ||
+                                (state.isEnd != null && state.isEnd == true))
+                            ? state.products.length + 1
+                            : state.products.length + 1,
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           }
           return Placeholder();
