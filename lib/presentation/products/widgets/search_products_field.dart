@@ -32,6 +32,14 @@ class _SearchProductsFieldState extends State<SearchProductsField> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.borderBackgroundColor),
           ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.borderBackgroundColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.borderBackgroundColor),
+            ),
           hintText: TextData.searchProduct,
           hintStyle: TextStyle(color: AppColors.secondaryColor,fontSize: 14),
           isDense: true,

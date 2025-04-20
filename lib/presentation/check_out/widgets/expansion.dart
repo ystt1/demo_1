@@ -59,7 +59,7 @@ class Expansion extends StatelessWidget {
                     color: Color(0xffDEFCE9),
                     border: Border.all(color: AppColors.primaryColor),
                   ),
-                  child: Center(child: Text('${products.length} SP')),
+                  child: Center(child: Text('${products.length} SP',style: TextStyle(color: Color(0xff114C29),fontSize: 12,fontWeight: FontWeight.w500),)),
                 ),
               ],
             ),
