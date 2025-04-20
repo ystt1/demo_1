@@ -22,9 +22,9 @@ class ProductLabels extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IconData iconDirection= direction == SortDirection.asc
-        ? CupertinoIcons.down_arrow
-        : CupertinoIcons.up_arrow;
+    Icon icon=Icon(direction == SortDirection.asc
+        ?  CupertinoIcons.down_arrow
+        : CupertinoIcons.up_arrow,color:AppColors.labelColor ,size: 12,);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -48,9 +48,7 @@ class ProductLabels extends StatelessWidget {
                 ),),
                 Visibility(
                   visible:type!=null && type == TypeSortProduct.name,
-                  child: Icon(
-                    iconDirection,color: AppColors.labelColor,
-                  ),
+                  child: icon,
                 ),
               ],
             ),
@@ -77,9 +75,7 @@ class ProductLabels extends StatelessWidget {
                 )),
                 Visibility(
                   visible:type!=null && type == TypeSortProduct.wholeSalePrice,
-                  child: Icon(
-                      iconDirection,color: AppColors.labelColor,
-                  ),
+                  child: icon
                 ),
               ],
             ),
@@ -106,9 +102,7 @@ class ProductLabels extends StatelessWidget {
                 )),
                 Visibility(
                   visible:type!=null && type == TypeSortProduct.retailPrice,
-                  child: Icon(
-                      iconDirection,color: AppColors.labelColor,
-                  ),
+                  child: icon
                 ),
               ],
             ),

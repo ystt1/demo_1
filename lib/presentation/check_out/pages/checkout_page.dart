@@ -29,33 +29,44 @@ class CheckoutPage extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 47),
             child: AppBar(
-              backgroundColor: AppColors.backgroundColor,
-              leading: IconButton(
-                icon: Icon(CupertinoIcons.back),
-                onPressed: () => Navigator.of(context).pop(),
+              toolbarHeight: 68,
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(CupertinoIcons.back, size: 24),
+                ),
               ),
-              title: Text(TextData.cart),
+              leadingWidth: 40,
+              titleSpacing: 6,
+              title: Text(
+                TextData.cart,
+                style: TextStyle(
+                  color: AppColors.dataTextColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+              ),
               actions: [
                 Image.asset(IconString.iconQrCode, width: 24, height: 24),
+                SizedBox(width: 16),
               ],
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Column(
-            children: [
-              AppDividerHorizontal(),
-              SizedBox(height: 8),
-              _listLabel(context),
-              _productList(),
-              Builder(
-                builder: (context) {
-                  return _orderInformation(context);
-                },
-              ),
-            ],
-          ),
+        body: Column(
+          children: [
+            AppDividerHorizontal(),
+            SizedBox(height: 8),
+            _listLabel(context),
+            SizedBox(height: 8),
+            _productList(),
+            Builder(
+              builder: (context) {
+                return _orderInformation(context);
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -70,15 +81,15 @@ class CheckoutPage extends StatelessWidget {
               .cart!
               .type;
 
-      print(type.runtimeType);
       direction =
           (context.watch<ProductBloc>().state as ProductSuccessState)
               .cart!
               .direction;
     }
     return Container(
+      height: 24,
       color: AppColors.backgroundColor,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ProductLabels(isInCart: true, type: type, direction: direction),
     );
   }
@@ -135,23 +146,32 @@ class CheckoutPage extends StatelessWidget {
           double length = productDiscount.length as double;
           double height =
               isExpanded && length > 0
-                  ? 251 + 20 + 24 + (22 * length + 4 * (length - 1)) + 12
-                  : 254 + 12;
+                  ? 202 + 12 + 22 * length + 4 * length + 24 + 8 + 48
+                  : 254;
+          double maxHeight = 202 + 12 + 22 * 4 + 4 * 4 + 24 + 8 + 48;
+          if (height > maxHeight) {
+            height = maxHeight;
+          }
+          print(height);
           return AnimatedContainer(
             duration: Duration(milliseconds: 400),
             height: height,
             child: Container(
-              constraints: BoxConstraints(
-                maxHeight: 251 + 20 + 24 + (22 * 10 + 4 * (10 - 1)) + 12,
-              ),
+              constraints: BoxConstraints(maxHeight: maxHeight),
               decoration: BoxDecoration(
                 color: AppColors.backgroundColor,
+                border: Border(
+                  top: BorderSide(
+                    color: AppColors.borderBackgroundColor,
+                    width: 1,
+                  ),
+                ),
                 boxShadow: [
                   BoxShadow(
                     offset: Offset(0, -1),
                     blurRadius: 2,
                     spreadRadius: 0,
-                    color: Color(0xff000000).withOpacity(0.06),
+                    color: Color(0xff000000).withAlpha(6),
                   ),
                 ],
               ),
@@ -163,14 +183,17 @@ class CheckoutPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: [
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         Container(
                           height: 32,
+                          padding: EdgeInsets.only(bottom: 8),
+
                           child: _labelInfo(
                             Text(
                               TextData.total,
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 16,
+                                color: AppColors.labelColor,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -179,6 +202,7 @@ class CheckoutPage extends StatelessWidget {
                                 state.cart!.subPrice,
                               ),
                               style: TextStyle(
+                                color: AppColors.dataTextColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -189,16 +213,20 @@ class CheckoutPage extends StatelessWidget {
                         AppDividerHorizontal(),
                         SizedBox(height: 4),
                         _labelInfo(
-                          Text(TextData.subTotal, style: TextStyle()),
+                          Text(
+                            TextData.subTotal,
+                            style: TextStyle(color: AppColors.labelColor),
+                          ),
                           Text(
                             AppHelper.vietNamMoneyFormat(
                               state.cart!.totalPrice,
                             ),
+                            style: TextStyle(color: AppColors.dataTextColor),
                           ),
                         ),
                         SizedBox(height: 4),
                         _labelInfo(
-                          Text(TextData.discount, style: TextStyle()),
+                          Text(TextData.discount, style: TextStyle(color: AppColors.labelColor),),
                           Text(
                             "- ${AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)}",
                             style: TextStyle(color: Colors.red),
@@ -206,12 +234,12 @@ class CheckoutPage extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         _labelInfo(
-                          Text(TextData.amount, style: TextStyle()),
-                          Text(state.cart!.amountProducts.toString()),
+                          Text(TextData.amount, style: TextStyle(color: AppColors.labelColor),),
+                          Text(state.cart!.amountProducts.toString(), style: TextStyle(color: AppColors.dataTextColor),),
                         ),
                         SizedBox(height: 10),
                         _orderButton(),
-                        SizedBox(height: 12),
+                        SizedBox(height: 16),
                       ],
                     ),
                   ),

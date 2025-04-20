@@ -29,7 +29,6 @@ class ProductPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 47.0),
           child: AppBar(
             backgroundColor: AppColors.backgroundColor,
-
             leading: Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Icon(CupertinoIcons.back,size: 24,),
@@ -44,6 +43,7 @@ class ProductPage extends StatelessWidget {
               Image.asset(IconString.iconFilter, width: 24, height: 24),
               SizedBox(width: 8),
               _cartIcon(context),
+              SizedBox(width: 16),
             ],
           ),
         ),

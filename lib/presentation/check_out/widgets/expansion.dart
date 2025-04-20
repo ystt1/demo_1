@@ -18,7 +18,6 @@ class Expansion extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          SizedBox(height: 12,),
           _expansionHeader(),
           AnimatedSize(
             duration: Duration(milliseconds: 400),
@@ -28,10 +27,10 @@ class Expansion extends StatelessWidget {
                       children: [
                         SizedBox(height: 8),
                         Container(height: 1,color: AppColors.secondBackgroundColor),
-                        SizedBox(height: 4),
+                        SizedBox(height: 8),
                         _infoLabel(context),
-                        SizedBox(height: 4),
                         _listDiscountProduct(context),
+                        SizedBox(height: 12),
                       ],
                     )
                     : SizedBox.shrink(),
@@ -42,49 +41,53 @@ class Expansion extends StatelessWidget {
   }
 
   Widget _expansionHeader() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Text(TextData.discountProduct,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-              SizedBox(width: 8),
-              Container(
-                width: 51,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(999),
-                  color: Color(0xffDEFCE9),
-                  border: Border.all(color: AppColors.primaryColor),
+    return Container(
+      height: 28+12,
+      padding: EdgeInsets.only(top: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Text(TextData.discountProduct,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                SizedBox(width: 8),
+                Container(
+                  width: 51,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: Color(0xffDEFCE9),
+                    border: Border.all(color: AppColors.primaryColor),
+                  ),
+                  child: Center(child: Text('${products.length} SP')),
                 ),
-                child: Center(child: Text('${products.length} SP')),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        SizedBox(width: 4),
-        Builder(
-          builder: (context) {
-            return GestureDetector(
-              onTap: () {
-                if (products.isNotEmpty) {
-                  context.read<ExpansionBloc>().add(ChangeExpansionEvent());
-                }
-              },
-              child: CircleAvatar(
-                backgroundColor: AppColors.secondBackgroundColor,
-                radius: 14,
-                child: Center(
-                  child: RotatedBox(
-                    quarterTurns: context.watch<ExpansionBloc>().state ? 3 : 1,
-                    child: Icon(CupertinoIcons.back),
+          SizedBox(width: 4),
+          Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () {
+                  if (products.isNotEmpty) {
+                    context.read<ExpansionBloc>().add(ChangeExpansionEvent());
+                  }
+                },
+                child: CircleAvatar(
+                  backgroundColor: AppColors.secondBackgroundColor,
+                  radius: 14,
+                  child: Center(
+                    child: RotatedBox(
+                      quarterTurns: context.watch<ExpansionBloc>().state ? 3 : 1,
+                      child: Icon(CupertinoIcons.back),
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -93,6 +96,7 @@ class Expansion extends StatelessWidget {
       height: 24,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: 96,
@@ -135,10 +139,13 @@ class Expansion extends StatelessWidget {
   }
 
   Widget _listDiscountProduct(BuildContext context) {
+
     return Container(
-      height: (22 * products.length + (4 * products.length - 1)) as double,
-      constraints: BoxConstraints(maxHeight:(22 * 10 + (4 *10 - 1)) as double, ),
+
+      constraints: BoxConstraints(maxHeight:(22 * 4 + 4 *(4 - 1)) as double, ),
+
       child: ListView.separated(
+        shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemBuilder: (_, index) {
           return _productData(products[index]);
@@ -161,12 +168,13 @@ class Expansion extends StatelessWidget {
       height: 22,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: 96,
             child: Text(
               name,
-              style: TextStyle(fontSize: 12, color: AppColors.dataTextColor),
+              style: TextStyle(fontSize: 12, color: AppColors.dataTextColor,fontWeight: FontWeight.w500),
               overflow: TextOverflow.clip,
             ),
           ),
@@ -181,7 +189,7 @@ class Expansion extends StatelessWidget {
                     child: Text(
                       amountWholesale,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: AppColors.dataTextColor,
                       ),
                     ),
@@ -195,7 +203,7 @@ class Expansion extends StatelessWidget {
                     child: Text(
                       amountRetail,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: AppColors.dataTextColor,
                       ),
                     ),
