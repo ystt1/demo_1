@@ -16,10 +16,13 @@ class AddVoucherSheet extends StatefulWidget {
   final BuildContext context;
   final double rateVoucher;
   final double moneyVoucher;
+
   const AddVoucherSheet({
     super.key,
     required this.product,
-    required this.context,  required this.rateVoucher, required this.moneyVoucher,
+    required this.context,
+    required this.rateVoucher,
+    required this.moneyVoucher,
   });
 
   @override
@@ -27,7 +30,6 @@ class AddVoucherSheet extends StatefulWidget {
 }
 
 class _AddVoucherSheetState extends State<AddVoucherSheet> {
-
   TextEditingController _moneyDiscountController = TextEditingController();
   TextEditingController _rateDiscountController = TextEditingController();
 
@@ -35,8 +37,10 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _moneyDiscountController.text=widget.moneyVoucher!=0?widget.moneyVoucher.toString():"";
-    _rateDiscountController.text=widget.rateVoucher!=0?widget.rateVoucher.toString():"";
+    _moneyDiscountController.text =
+        widget.moneyVoucher != 0 ? widget.moneyVoucher.toString() : "";
+    _rateDiscountController.text =
+        widget.rateVoucher != 0 ? widget.rateVoucher.toString() : "";
   }
 
   @override
@@ -46,28 +50,35 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
         if (state is ProductSuccessState) {
           if (state.returnedApplyVoucher == ReturnedApplyVoucher.success) {
             Navigator.of(context).pop();
-          }else{
-            setState(() {
-
-            });
+          } else {
+            setState(() {});
           }
         }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.borderBackgroundColor,
+                  width: 1,
+                ),
+              ),
+            ),
             child: _header(context),
           ),
-          AppDividerHorizontal(),
-          SizedBox(height: 4),
+
+          SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _textFieldLabel(TextData.moneyDiscount),
           ),
           SizedBox(height: 4),
-          Padding(
+          Container(
+            height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _textField(
               TextData.enterMoney,
@@ -81,7 +92,8 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             child: _textFieldLabel(TextData.rateDiscount),
           ),
           SizedBox(height: 4),
-          Padding(
+          Container(
+            height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _textField(
               TextData.enterRate,
@@ -94,24 +106,29 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _returnedError(),
           ),
-          AppDividerHorizontal(),
-
           Container(
-            height: 46,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            height: 54,
+            padding: const EdgeInsets.only(right: 16,left: 16,top: 8),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: AppColors.borderBackgroundColor,
+                  width: 1,
+                ),
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [_backButton(), _applyButton()],
             ),
           ),
+          SizedBox(height: 34,)
+
         ],
       ),
     );
-
-
-
-
   }
+
   Widget _header(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,21 +154,39 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
   }
 
   Widget _textFieldLabel(String label) {
-    return Text(label);
+    return Text(label, style: TextStyle(color: AppColors.dataTextColor));
   }
 
   Widget _textField(String hint, String icon, TypeVoucher type) {
     return TextField(
+      cursorColor: AppColors.primaryColor,
+      style: TextStyle(
+        color: AppColors.dataTextColor,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
       controller:
-      type == TypeVoucher.rateDiscount
-          ? _rateDiscountController
-          : _moneyDiscountController,
+          type == TypeVoucher.rateDiscount
+              ? _rateDiscountController
+              : _moneyDiscountController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.borderBackgroundColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: AppColors.borderBackgroundColor),
         ),
+
         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 9),
         hintText: hint,
         hintStyle: TextStyle(
@@ -159,52 +194,58 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
           fontSize: 16,
           fontWeight: FontWeight.w400,
         ),
-        suffixIcon: SizedBox(
+        suffixIcon: Container(
           width: 46,
-          child: Row(
-            children: [
-              Container(
-                width: 1,
-                height: 40,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Color(0xFCFCFC),
+            border: Border(
+              left: BorderSide(
                 color: AppColors.borderBackgroundColor,
+                width: 1,
               ),
-              Expanded(
-                child: Center(
-                  child: Text(icon, style: TextStyle(fontSize: 16)),
-                ),
-              ),
-            ],
+            ),
           ),
+          alignment: Alignment.center,
+          child: Text(icon, style: TextStyle(fontSize: 16)),
         ),
       ),
     );
   }
 
   Widget _backButton() {
-    return ConstrainedBox(
+    return Container(
       constraints: BoxConstraints(minWidth: 100, minHeight: 46),
+
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: Color(0xff000000).withAlpha(6)
+            )
           ),
         ),
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text(TextData.back),
+        child: Text(TextData.back,style: TextStyle(color: AppColors.dataTextColor,fontWeight: FontWeight.w600),),
       ),
     );
   }
 
   Widget _applyButton() {
     return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: 227, minHeight: 46),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
+      constraints: BoxConstraints(maxWidth: 227, minHeight: 46),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: AppColors.primaryColor
+            ),
           ),
         ),
         onPressed: () {
@@ -212,43 +253,40 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
             ApplyVoucherProductEvent(
               productId: widget.product.id,
               moneyDiscount:
-              double.tryParse(_moneyDiscountController.text) ?? 0,
+                  double.tryParse(_moneyDiscountController.text) ?? 0,
               rateDiscount: double.tryParse(_rateDiscountController.text) ?? 0,
             ),
           );
         },
-        child: Text(TextData.apply, style: TextStyle(color: Colors.white)),
+        child: Text(TextData.apply, style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600)),
       ),
     );
   }
 
-
-  Widget _returnedError()
-  {
+  Widget _returnedError() {
     return Visibility(
       visible:
-      (widget.context.watch<ProductBloc>().state as ProductSuccessState)
-          .returnedApplyVoucher !=
+          (widget.context.watch<ProductBloc>().state as ProductSuccessState)
+              .returnedApplyVoucher !=
           null,
       child: Text(
         (widget.context.watch<ProductBloc>().state as ProductSuccessState)
-            .returnedApplyVoucher ==
-            ReturnedApplyVoucher.error1
+                    .returnedApplyVoucher ==
+                ReturnedApplyVoucher.error1
             ? TextData.applyVoucherError1
             : ((widget.context.watch<ProductBloc>().state
-        as ProductSuccessState)
-            .returnedApplyVoucher ==
-            ReturnedApplyVoucher.error2
-            ? TextData.applyVoucherError2
-            : ((widget.context.watch<ProductBloc>().state
-        as ProductSuccessState)
-            .returnedApplyVoucher ==
-            ReturnedApplyVoucher.error3
-            ? TextData.applyVoucherError3
-            : "")),
+                            as ProductSuccessState)
+                        .returnedApplyVoucher ==
+                    ReturnedApplyVoucher.error2
+                ? TextData.applyVoucherError2
+                : ((widget.context.watch<ProductBloc>().state
+                                as ProductSuccessState)
+                            .returnedApplyVoucher ==
+                        ReturnedApplyVoucher.error3
+                    ? TextData.applyVoucherError3
+                    : "")),
         style: TextStyle(color: Colors.red),
       ),
     );
   }
-
 }

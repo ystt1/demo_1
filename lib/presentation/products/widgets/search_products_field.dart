@@ -17,8 +17,8 @@ class _SearchProductsFieldState extends State<SearchProductsField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 36,
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 36),
       child: TextField(
         controller: _searchController,
         onChanged: (value) {
