@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.backgroundColor,
-
+    listTileTheme: ListTileThemeData(
+      contentPadding: EdgeInsets.zero,
+    ),
+    dividerColor: Colors.transparent,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: Size(double.infinity, 46),

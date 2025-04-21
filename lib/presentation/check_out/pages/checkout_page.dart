@@ -2,6 +2,7 @@ import 'package:demo_1/assets/text_data.dart';
 import 'package:demo_1/common/constants/app_colors.dart';
 import 'package:demo_1/common/helper/app_helper.dart';
 import 'package:demo_1/common/widgets/product_card.dart';
+import 'package:demo_1/presentation/check_out/widgets/new_expansion.dart';
 import 'package:demo_1/presentation/products/bloc/product/bloc.dart';
 import 'package:demo_1/presentation/products/bloc/product/state.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,9 +158,9 @@ class CheckoutPage extends StatelessWidget {
           String discount= AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)!="0"?"- ${AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)}":"";
           return AnimatedContainer(
             duration: Duration(milliseconds: 400),
-            height: height,
+            //height: height,
             child: Container(
-              constraints: BoxConstraints(maxHeight: maxHeight),
+              //constraints: BoxConstraints(maxHeight: maxHeight),
               decoration: BoxDecoration(
                 color: AppColors.backgroundColor,
                 border: Border(
@@ -179,7 +180,7 @@ class CheckoutPage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Expanded(child: Expansion(products: productDiscount)),
+                  NewExpansion(products: productDiscount,isExpanded:isExpanded),
                   AppDividerHorizontal(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
