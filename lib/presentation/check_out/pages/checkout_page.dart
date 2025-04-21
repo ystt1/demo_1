@@ -25,7 +25,7 @@ class CheckoutPage extends StatelessWidget {
       create: (BuildContext context) => ExpansionBloc(),
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(68 + 47),
+          preferredSize: Size.fromHeight(115),
           child: Padding(
             padding: EdgeInsets.only(top: 47),
             child: AppBar(
@@ -102,7 +102,7 @@ class CheckoutPage extends StatelessWidget {
           builder: (BuildContext context, ProductState state) {
             if (state is ProductSuccessState) {
               if (state.cart == null || state.cart!.products.isEmpty) {
-                return Center(child: Text(TextData.endOfList));
+                return Center(child: Text(TextData.notFoundProduct));
               }
               return ListView.separated(
                 itemBuilder: (_, index) {
@@ -144,7 +144,9 @@ class CheckoutPage extends StatelessWidget {
                   .where((e) => e.moneyDiscount != 0 || e.rateDiscount != 0)
                   .toList();
           double length = productDiscount.length as double;
-          double height =
+          print("lenght ${state.cart!.products.length}");
+          double height=254;
+           height =
               isExpanded && length > 0
                   ? 202 + 12 + 22 * length + 4 * length + 24 + 8 + 48
                   : 254;
@@ -152,7 +154,7 @@ class CheckoutPage extends StatelessWidget {
           if (height > maxHeight) {
             height = maxHeight;
           }
-          print(height);
+          String discount= AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)!="0"?"- ${AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)}":"";
           return AnimatedContainer(
             duration: Duration(milliseconds: 400),
             height: height,
@@ -171,7 +173,7 @@ class CheckoutPage extends StatelessWidget {
                     offset: Offset(0, -1),
                     blurRadius: 2,
                     spreadRadius: 0,
-                    color: Color(0xff000000).withAlpha(6),
+                    color: Color(0xff000000).withValues(alpha: 0.06),
                   ),
                 ],
               ),
@@ -228,7 +230,8 @@ class CheckoutPage extends StatelessWidget {
                         _labelInfo(
                           Text(TextData.discount, style: TextStyle(color: AppColors.labelColor),),
                           Text(
-                            "- ${AppHelper.vietNamMoneyFormat(state.cart!.totalPrice - state.cart!.subPrice)}",
+                             discount ,
+
                             style: TextStyle(color: Colors.red),
                           ),
                         ),

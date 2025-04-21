@@ -17,41 +17,39 @@ class _SearchProductsFieldState extends State<SearchProductsField> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 36),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (value) {
-          context.read<ProductBloc>().add(
-            SearchProductEvent(name: _searchController.text),
-          );
-        },
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(top: 6,bottom: 6,right: 8),
-          border: OutlineInputBorder(
+    return TextField(
+      controller: _searchController,
+      onChanged: (value) {
+        context.read<ProductBloc>().add(
+          SearchProductEvent(name: _searchController.text),
+        );
+      },
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.only(top: 6,bottom: 6,right: 12),
+
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.borderBackgroundColor),
+        ),
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.borderBackgroundColor),
           ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.borderBackgroundColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.borderBackgroundColor),
-            ),
-          hintText: TextData.searchProduct,
-          hintStyle: TextStyle(color: AppColors.secondaryColor,fontSize: 14),
-          isDense: true,
-            prefixIcon: Container(
-              padding: const EdgeInsets.only(left: 12,),
-              child: Icon(Icons.search,size: 24,),
-            ),
-          prefixIconConstraints: BoxConstraints(
-            maxWidth: 48,
-            maxHeight: 24
-          )
-        ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: AppColors.borderBackgroundColor),
+          ),
+        hintText: TextData.searchProduct,
+        hintStyle: TextStyle(color: AppColors.secondaryColor,fontSize: 14,height: 2.2),
+        isDense: true,
+          prefixIcon: Container(
+            padding: const EdgeInsets.only(left: 12,),
+            child: Icon(Icons.search,size: 24,),
+          ),
+        prefixIconConstraints: BoxConstraints(
+          maxWidth: 48,
+          maxHeight: 24
+        )
       ),
     );
   }

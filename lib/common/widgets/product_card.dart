@@ -213,68 +213,67 @@ class _ProductCardState extends State<ProductCard> {
               },
               child: _changeAmountButton(Icon(Icons.remove)),
             ),
-            IntrinsicWidth(
-              child: Container(
-                constraints: BoxConstraints(
-                  minWidth: 40
-                ),
-                height: 28,
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (type == TypeAmountProduct.retail) {
-                        isEditingRetail = true;
-                        _controller.text = widget.retailAmount.toString();
-                      } else {
-                        isEditingWholeSale = true;
-                        _controller.text = widget.wholeSaleAmount.toString();
-                      }
-                    });
-                  },
-                  child:
-                      !_isChoosing
-                          ? Text(
-                            amount.toString(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color:
-                                  amount! > 0
-                                      ? AppColors.dataTextColor
-                                      : AppColors.secondaryColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                          : Container(
-                            alignment: Alignment.center,
-                            height: 28,
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: TextField(
-                              autofocus: true,
-                              controller: _controller,
-                              focusNode: _focus,
-                              onEditingComplete: () {
-                                _focus.unfocus();
-                              },
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              style: TextStyle(
-                                color: AppColors.dataTextColor,
-                                fontSize: 13,
-                              ),
-                              decoration: InputDecoration(
-                                isDense: true,
-                                border: UnderlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal: 2,
-                                ),
-                              ),
+            GestureDetector(
+              onTap: (){
+                setState(() {
+                  if (type == TypeAmountProduct.retail) {
+                    isEditingRetail = true;
+                    _controller.text = widget.retailAmount.toString();
+                  } else {
+                    isEditingWholeSale = true;
+                    _controller.text = widget.wholeSaleAmount.toString();
+                  }
+                });
+              },
+              child: IntrinsicWidth(
+                child: Container(
+                  constraints: BoxConstraints(
+                    minWidth: 40
+                  ),
+                  height: 28,
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  alignment: Alignment.center,
+                  child: !_isChoosing
+                      ? Text(
+                        amount.toString(),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color:
+                              amount! > 0
+                                  ? AppColors.dataTextColor
+                                  : AppColors.secondaryColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                      : Container(
+                        alignment: Alignment.center,
+                        height: 28,
+                        padding: EdgeInsets.symmetric(horizontal: 2),
+                        child: TextField(
+                          autofocus: true,
+                          controller: _controller,
+                          focusNode: _focus,
+                          onEditingComplete: () {
+                            _focus.unfocus();
+                          },
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          style: TextStyle(
+                            color: AppColors.dataTextColor,
+                            fontSize: 13,
+                          ),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: UnderlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 2,
                             ),
                           ),
+                        ),
+                      ),
                 ),
               ),
             ),
@@ -302,7 +301,7 @@ class _ProductCardState extends State<ProductCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            color: AppColors.backgroundColor.withAlpha(80),
+            color: AppColors.backgroundColor,
             child: Text(
               widget.moneyVoucher != 0
                   ? "${TextData.discount2} ${widget.moneyVoucher} đ".toString()
@@ -310,7 +309,7 @@ class _ProductCardState extends State<ProductCard> {
                       ? "${TextData.discount2} ${widget.rateVoucher}%"
                           .toString()
                       : TextData.addVoucher),
-              style: TextStyle(color: AppColors.dataTextColor),
+              style: TextStyle(color: AppColors.dataTextColor.withValues(alpha: 0.8)),
             ),
           ),
           GestureDetector(

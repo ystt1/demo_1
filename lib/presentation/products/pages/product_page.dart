@@ -35,6 +35,7 @@ class ProductPage extends StatelessWidget {
             ),
             leadingWidth: 40,
             titleSpacing: 6,
+            toolbarHeight: 68,
             title: SearchProductsField(),
             actions: [
               SizedBox(width: 2,),
@@ -99,7 +100,7 @@ class ProductPage extends StatelessWidget {
                         color:
                             isChosen
                                 ? AppColors.primaryColor
-                                : AppColors.secondBackgroundColor,
+                                : AppColors.borderBackgroundColor,
                       ),
                     ),
                     child: Center(
@@ -160,7 +161,7 @@ class ProductPage extends StatelessWidget {
         boxShadow: [BoxShadow(
           blurRadius: 3,
           offset: Offset(0, -1),
-          color: Color(0xff000000).withAlpha(10)
+          color: Color(0xff000000).withValues(alpha: 0.1)
         )],
         border: Border(
           top: BorderSide(width: 1, color: AppColors.secondBackgroundColor),

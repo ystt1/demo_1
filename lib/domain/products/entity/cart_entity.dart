@@ -42,12 +42,22 @@ class CartEntity {
       final current = products[index];
       final updated = current.clone();
       if (type == TypeAmountProduct.retail) {
-        updated.update(amountRetail: (updated.amountRetail ?? 0) + amount);
+        final currentAmount = current.amountRetail ?? 0;
+        print("currentAmount: $currentAmount, amount: $amount, sum: ${currentAmount + amount}");
+        if((currentAmount + amount)>=0) {
+          print("${current.amountRetail} ${amount}");
+          updated.update(amountRetail: (updated.amountRetail ?? 0) + amount);
+        }
+        else{
+          return;
+        }
       } else {
-
-        updated.update(
-          amountWhoseSale: (updated.amountWholeSale ?? 0) + amount,
-        );
+        final currentAmount = current.amountWholeSale ?? 0;
+        if((currentAmount + amount)>=0) {
+          updated.update(
+            amountWhoseSale: (updated.amountWholeSale ?? 0) + amount,
+          );
+        }
       }
       final totalAmount =
           (updated.amountRetail ?? 0) + (updated.amountWholeSale ?? 0);

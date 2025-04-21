@@ -91,9 +91,16 @@ class _ListProductState extends State<ListProduct> {
                       }
                       return (state.isLoadingMore != null &&
                               state.isLoadingMore == true)
-                          ? Center(child: CircularProgressIndicator())
+                          ? Container(
+                        color: AppColors.secondBackgroundColor,
+                            padding: const EdgeInsets.symmetric(vertical:  8.0),
+                            child: Center(child: CircularProgressIndicator()),
+                          )
                           : ((state.isEnd != null && state.isEnd == true)
-                              ? Center(child: Text(TextData.endOfList))
+                              ? Container(
+                        color: AppColors.secondBackgroundColor,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(child: Text(TextData.endOfList)))
                               : SizedBox());
                     },
                     separatorBuilder: (_, index) => Container(height: 8,color: AppColors.secondBackgroundColor,),

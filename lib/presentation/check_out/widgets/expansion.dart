@@ -22,11 +22,14 @@ class Expansion extends StatelessWidget {
           AnimatedSize(
             duration: Duration(milliseconds: 400),
             child:
-                context.watch<ExpansionBloc>().state
+                context.watch<ExpansionBloc>().state && products.isNotEmpty
                     ? Column(
                       children: [
                         SizedBox(height: 8),
-                        Container(height: 1,color: AppColors.secondBackgroundColor),
+                        Container(
+                          height: 1,
+                          color: AppColors.secondBackgroundColor,
+                        ),
                         SizedBox(height: 8),
                         _infoLabel(context),
                         _listDiscountProduct(context),
@@ -42,7 +45,7 @@ class Expansion extends StatelessWidget {
 
   Widget _expansionHeader() {
     return Container(
-      height: 28+12,
+      height: 28 + 12,
       padding: EdgeInsets.only(top: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,7 +53,10 @@ class Expansion extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Text(TextData.discountProduct,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                Text(
+                  TextData.discountProduct,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
                 SizedBox(width: 8),
                 Container(
                   width: 51,
@@ -59,7 +65,16 @@ class Expansion extends StatelessWidget {
                     color: Color(0xffDEFCE9),
                     border: Border.all(color: AppColors.primaryColor),
                   ),
-                  child: Center(child: Text('${products.length} SP',style: TextStyle(color: Color(0xff114C29),fontSize: 12,fontWeight: FontWeight.w500),)),
+                  child: Center(
+                    child: Text(
+                      '${products.length} SP',
+                      style: TextStyle(
+                        color: Color(0xff114C29),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -78,7 +93,8 @@ class Expansion extends StatelessWidget {
                   radius: 14,
                   child: Center(
                     child: RotatedBox(
-                      quarterTurns: context.watch<ExpansionBloc>().state ? 3 : 1,
+                      quarterTurns:
+                          context.watch<ExpansionBloc>().state ? 3 : 1,
                       child: Icon(CupertinoIcons.back),
                     ),
                   ),
@@ -98,39 +114,33 @@ class Expansion extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 96,
-            child: Text(
-              TextData.product,
-              style: TextStyle(color: Color(0xff71717A), fontSize: 12),
-            ),
-          ),
-          SizedBox(width: 8),
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      TextData.wholesaleAmount,
-                      style: TextStyle(color: Color(0xff71717A), fontSize: 12),
-                    ),
+                Container(
+                  child: Text(
+                    TextData.product,
+                    style: TextStyle(color: Color(0xff71717A), fontSize: 12),
                   ),
                 ),
+
                 SizedBox(width: 8),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      TextData.retailAmount,
-                      style: TextStyle(color: Color(0xff71717A), fontSize: 12),
-                    ),
-                  ),
+                Text(
+                  TextData.wholesaleAmount,
+                  style: TextStyle(color: Color(0xff71717A), fontSize: 12),
                 ),
               ],
+            ),
+          ),
+
+          SizedBox(width: 8),
+          Container(
+            constraints: BoxConstraints(minWidth: 119),
+            alignment: Alignment.centerRight,
+            child: Text(
+              TextData.retailAmount,
+              style: TextStyle(color: Color(0xff71717A), fontSize: 12),
             ),
           ),
         ],
@@ -139,10 +149,8 @@ class Expansion extends StatelessWidget {
   }
 
   Widget _listDiscountProduct(BuildContext context) {
-
     return Container(
-
-      constraints: BoxConstraints(maxHeight:(22 * 4 + 4 *(4 - 1)) as double, ),
+      constraints: BoxConstraints(maxHeight: (22 * 4 + 4 * (4 - 1)) as double),
 
       child: ListView.separated(
         shrinkWrap: true,
@@ -167,49 +175,43 @@ class Expansion extends StatelessWidget {
     return SizedBox(
       height: 22,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 96,
-            child: Text(
-              name,
-              style: TextStyle(fontSize: 12, color: AppColors.dataTextColor,fontWeight: FontWeight.w500),
-              overflow: TextOverflow.clip,
-            ),
-          ),
-          SizedBox(width: 8),
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      amountWholesale,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.dataTextColor,
-                      ),
+                Container(
+                  child: Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.dataTextColor,
+                      fontWeight: FontWeight.w500,
                     ),
+                    overflow: TextOverflow.clip,
                   ),
                 ),
                 SizedBox(width: 8),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      amountRetail,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.dataTextColor,
-                      ),
-                    ),
+                Text(
+                  amountWholesale,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.dataTextColor,
                   ),
                 ),
               ],
+            ),
+          ),
+
+          SizedBox(width: 8),
+          Container(
+            constraints: BoxConstraints(maxWidth: 119),
+            alignment: Alignment.centerRight,
+            child: Text(
+              amountRetail,
+              style: TextStyle(fontSize: 14, color: AppColors.dataTextColor),
             ),
           ),
         ],

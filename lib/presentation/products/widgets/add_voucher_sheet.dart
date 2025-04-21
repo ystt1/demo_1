@@ -223,7 +223,7 @@ class _AddVoucherSheetState extends State<AddVoucherSheet> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-              color: Color(0xff000000).withAlpha(6)
+              color: Color(0xff000000).withValues(alpha: 0.06)
             )
           ),
         ),
